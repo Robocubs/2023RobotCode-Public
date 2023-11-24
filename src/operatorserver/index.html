@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./assets/pieces.css">
+    <script src="./script/jquery-latest.min.js"></script>
+    <script src="/networktables/networktables.js"></script>
+    <frc-dashboard onload="ntLoaded()">
+        <div style="background-color: #9d2235;padding: 15px;">
+            <img class="logo" src="./assets/cub.png">
+            <h1 class="title">Robocubs - USS Prometheus</h1>
+            <div style="border-style: solid;border-color: white;border-width: 10px;display: flex; justify-content: space-around; line-height: 1px; height: fit-content;margin: 0;"
+                id="buttons">
+                <div class="vcontainer" style="padding: 10px;">
+                    <center>
+                        <!-- <frc-toggle-button onclick="piecehandler(this.id)" class="subconfirmation"
+                            id="subleft"></frc-toggle-button> -->
+                        <frc-toggle-button onclick="sendmainaction(this.id)" class="compress"
+                            id="compress"></frc-toggle-button>
+                        <div class="vcontainer" style="border-style: solid;border-color: white;border-width: 0px;">
+                            <frc-toggle-button onclick="piecehandler(this.id)" class="intakecontrol"
+                                id="intakeextend"></frc-toggle-button>
+                            <frc-toggle-button onclick="piecehandler(this.id)" class="intakecontrol"
+                                id="intakeretract"></frc-toggle-button>
+                        </div>
+                        <h1 style="font-size: 20px; color: white; font-family: 'ethnocentric';">Intake</h1>
+                    </center>
+                </div>
+                <div class="vcontainer">
+                    <center>
+                        <div id="r2"></div>
+                        <div id="r1"></div>
+                        <div id="r0"></div>
+                    </center>
+                    <div style="display: flex; justify-content:space-evenly">
+                        <frc-toggle-button onclick="piecehandler(this.id)" class="intakecontrolbig"
+                            id="intakereject"></frc-toggle-button>
+                        <frc-toggle-button onclick="poshandler(this.id)" class="intaketoggle"
+                            id="intaketoggle"></frc-toggle-button>
+                        <frc-toggle-button onclick="forceload()" class="forceload" id="forceload"></frc-toggle-button>
+                        <frc-toggle-button onclick="poshandler(this.id)" class="movearm" id="pos"></frc-toggle-button>
+                    </div>
+                </div>
+                <div class="vcontainer" style="padding: 10px;">
+                    <center>
+                        <!-- <frc-toggle-button onclick="piecehandler(this.id)" class="subconfirmation"
+                            id="subright"></frc-toggle-button> -->
+                        <div class="vcontainer" style="border-style: solid;border-color: white;border-width: 0px;">
+                            <frc-toggle-button onclick="poshandler(this.id)" class="dunk"
+                                id="armdunk"></frc-toggle-button>
+                            <frc-toggle-button onclick="poshandler(this.id)" class="home"
+                                id="armhome"></frc-toggle-button>
+                            <frc-toggle-button onclick="piecehandler(this.id)" class="clawcontrol"
+                                id="clawtoggle"></frc-toggle-button>
+                        </div>
+                        <h1 style="font-size: 20px; color: white; font-family: 'ethnocentric';">Arm/Claw</h1>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <div class="info">
+            <div class="vcontainer">
+                <h1 style="font-size: 20px; color: white; font-family: 'ethnocentric';">Hand Has Piece:</h1>
+                <frc-boolean-box id="handhaspiece" class="boolel" style="padding-right: 30px;" value>
+                </frc-boolean-box>
+            </div>
+            <center>
+                <div class="vcontainer">
+                    <h1 style=" font-family: ethnocentric;color:white;font-size:15px">> Current Piece:
+                    </h1>
+                    <h1 style=" font-family: ethnocentric;color:white;font-size:25px" id="currentselection">No Piece
+                        Selected
+                    </h1>
+                </div>
+                <div class="vcontainer" style="padding-right: 30px;">
+                    <h1 style=" font-family: ethnocentric;color:white;font-size:15px">~ Robot Connected:</h1>
+                    <h1 style=" font-family: ethnocentric;color:white;font-size:25px" id="robotconnected">NO</h1>
+                </div>
+                <div class="vcontainer" style="padding-right: 30px;">
+                    <h1 style=" font-family: ethnocentric;color:white;font-size:15px">$ PSI:</h1>
+                    <h1 style=" font-family: ethnocentric;color:lightblue;font-size:25px;overflow: visible;" id="psi">
+                    </h1>
+                </div>
+                <div class="vcontainer" style="padding-right: 23px;">
+                    <h1 style=" font-family: ethnocentric;color:white;font-size:15px">$ ETA FILLED:</h1>
+                    <h1 style=" font-family: ethnocentric;color:lightblue;font-size:25px" id="psifilled"></h1>
+                </div>
+            </center>
+            <div class="vcontainer">
+                <h1 style="font-size: 20px; color: white; font-family: 'ethnocentric';">At Waypoint:</h1>
+                <frc-boolean-box id="atwaypoint" class="boolel" value>
+                </frc-boolean-box>
+            </div>
+        </div>
+
+        <script>
+            var currentSelected = ""
+            var previousPosSelected = ""
+            var pattern = [
+                "o",
+                "u",
+                "o",
+                "o",
+                "u",
+                "o",
+                "o",
+                "u",
+                "o"
+            ]
+
+            function forceload() {
+                var ntconnected = NetworkTables.getValue("/AdvantageKit/RealOutputs/Looper/enabled/Running", undefined) != undefined;
+                NetworkTables.putValue('/SmartDashboard/operatorserverloaded', true);
+                if (NetworkTables.isRobotConnected() && ntconnected) {
+                    $("#robotconnected")[0].innerText = "YES"
+                    $("#robotconnected").css('color', 'green');
+                }
+                else {
+                    $("#robotconnected")[0].innerText = "NO"
+                    $("#robotconnected").css('color', 'red');
+                }
+            }
+
+            function sendmainaction(id) {
+                currentSelected = id
+                $("#currentselection")[0].innerText = currentSelected;
+                if (String(id).includes("anon")) {
+                    $("#currentselection").css('color', 'blue');
+                }
+                else if (String(id).includes("cone")) {
+                    $("#currentselection").css('color', 'yellow');
+                }
+                else if (String(id).includes("cube")) {
+                    $("#currentselection").css('color', 'purple');
+                }
+                else if (String(id).includes("sub")) {
+                    $("#currentselection").css('color', 'grey');
+                }
+                else if (String(id).includes("intake")) {
+                    $("#currentselection").css('color', 'darkkhaki');
+                }
+                else if (String(id).includes("claw")) {
+                    $("#currentselection").css('color', 'darkolivegreen');
+                }
+                else if (String(id).includes("arm")) {
+                    $("#currentselection").css('color', 'darkgoldenrod');
+                }
+                else if (String(id).includes("compress")) {
+                    $("#currentselection").css('color', 'darksalmon');
+                }
+                else {
+                    $("#currentselection").css('color', 'white');
+                }
+                NetworkTables.putValue('/SmartDashboard/requestedAction', currentSelected)
+                NetworkTables.putValue('/SmartDashboard/actionRequested', true)
+            }
+
+            function deselectOtherPiece(id) {
+                if (currentSelected == "" || currentSelected == id) {
+                    currentSelected = "00";
+                    return;
+                }
+                $("#" + currentSelected)[0].toggled = false;
+                if (previousPosSelected != "") {
+                    $("#" + previousPosSelected)[0].toggled = false;
+                }
+
+            }
+            function poshandler(id) {
+                previousPosSelected = currentSelected;
+                sendmainaction(id)
+            }
+
+            function piecehandler(id) {
+                deselectOtherPiece(id)
+                sendmainaction(id)
+            }
+            for (var rowidx = 0; rowidx < 3; rowidx++) {
+                var row = $("#r" + rowidx);
+                for (var i = 8; i > -1; i--) {
+                    if (rowidx != 0) {
+                        if (pattern[i] == "o")
+                            row.append('<frc-toggle-button onclick="piecehandler(this.id)" source-key="/piecer' + rowidx + i + '" id ="coner' + rowidx + i + "" + '" class="cone"></frc-toggle-button>');
+                        else
+                            row.append('<frc-toggle-button onclick="piecehandler(this.id)" source-key="/piecer' + rowidx + i + '" id ="cuber' + rowidx + i + "" + '" class="cube"></frc-toggle-button>');
+                    }
+                    else
+                        row.append('<frc-toggle-button onclick="piecehandler(this.id)" source-key="/piecer' + rowidx + i + '" id ="anonr' + rowidx + i + "" + '" class="circle"></frc-toggle-button>');
+                }
+            }
+            // Web components bug
+            $("#pos")[0].label = "Position";
+            // $("#subleft")[0].label = "Left Sub";
+            // $("#subright")[0].label = "Right Sub";
+            $("#armdunk")[0].label = "Dunk"
+            $("#compress")[0].label = "Compress"
+            $("#forceload")[0].label = "Force load";
+            $("#intakeextend")[0].label = "Extend"
+            $("#intakeretract")[0].label = "Retract"
+            $("#intaketoggle")[0].label = "Toggle Intake"
+            $("#intakereject")[0].label = "Reject Intake"
+            $("#clawtoggle")[0].label = "Toggle"
+            $("#armhome")[0].label = "Home"
+        </script>
+    </frc-dashboard>
+    <script src="./script/frc-web-components.js"></script>
+    <script>
+        function ntLoaded() {
+        }
+        //letting roborio know I inited here because ntLoaded is never actually called. fun bug
+        forceload();
+        setInterval(function () {
+            var psi = NetworkTables.getValue("/AdvantageKit/Pneumatics/PSI", "NONE");
+            $("#psi")[0].innerText = Math.floor(psi * 10) / 10;
+            $("#atwaypoint")[0].value = NetworkTables.getValue("/AdvantageKit/RealOutputs/Drive/IsAtWaypoint", false);
+            $("#handhaspiece")[0].value = NetworkTables.getValue("/AdvantageKit/Hand/SensesObject", false);
+            $("#psifilled")[0].innerText = Math.floor(((117.0 - psi) * 1.3333) * 10) / 10;
+        }, 500)
+    </script>
+</head>
+
+<body style="background-color:#9d2235;">
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.86,
+        "y": 0.51
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.354475263769455,
+        "y": 0.7954854266449061
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.9,
+        "y": 0.7456982355825191
+      },
+      "prevControl": {
+        "x": 3.329846827124822,
+        "y": 0.7456982355825191
+      },
+      "nextControl": {
+        "x": 4.463289880233015,
+        "y": 0.7456982355825191
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": 1.0,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.92,
+        "y": 1.1
+      },
+      "prevControl": {
+        "x": 6.6982100887137594,
+        "y": 1.094889423052006
+      },
+      "nextControl": {
+        "x": 6.6982100887137594,
+        "y": 1.094889423052006
+      },
+      "holonomicAngle": 2.8,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.9186778801568956,
+        "y": 0.7589184697137771
+      },
+      "prevControl": {
+        "x": 4.602778255703534,
+        "y": 0.758918469713777
+      },
+      "nextControl": {
+        "x": 2.1602524322270646,
+        "y": 0.7589184697137773
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": 1.5,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.91,
+        "y": 1.07
+      },
+      "prevControl": {
+        "x": 1.9084418197242619,
+        "y": 0.9594855656270477
+      },
+      "nextControl": {
+        "x": 1.9176057657134626,
+        "y": 1.6094413656008786
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.3472346461601137,
+        "y": 2.05043443903313
+      },
+      "prevControl": {
+        "x": 2.10300119279291,
+        "y": 1.8934272190113561
+      },
+      "nextControl": {
+        "x": 2.6269051571919566,
+        "y": 2.2302226246964576
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.93,
+        "y": 2.255784724553079
+      },
+      "prevControl": {
+        "x": 3.1688320247223647,
+        "y": 2.2701755548438647
+      },
+      "nextControl": null,
+      "holonomicAngle": 0.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "maxVelocity": 3.5,
+  "maxAcceleration": 2.0,
+  "isReversed": null,
+  "markers": [
+    {
+      "position": 1.3,
+      "names": [
+        "deployIntake"
+      ]
+    },
+    {
+      "position": 2.727272727272732,
+      "names": [
+        "retractIntake"
+      ]
+    }
+  ]
+}
